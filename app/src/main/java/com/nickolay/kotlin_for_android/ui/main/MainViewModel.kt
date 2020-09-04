@@ -1,6 +1,8 @@
-package com.nickolay.kotlin_for_android
+package com.nickolay.kotlin_for_android.ui.main
 
 import androidx.lifecycle.*
+import com.nickolay.kotlin_for_android.ModelRepository
+import com.nickolay.kotlin_for_android.OnDataCallback
 
 class MainViewModel: ViewModel() {
 
