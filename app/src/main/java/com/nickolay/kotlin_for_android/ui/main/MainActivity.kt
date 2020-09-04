@@ -2,6 +2,7 @@ package com.nickolay.kotlin_for_android.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.nickolay.kotlin_for_android.R
 
@@ -17,9 +18,13 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-//        viewModel.viewData.observe(this, { tvMessage.text = it })
-//
-//        bClicker.setOnClickListener { viewModel.doClick() }
+        rv_notes.adapter = viewModel.adapter
+
+        viewModel.viewState.observe(this, { value ->
+            value?.let {
+                viewModel.adapter.notes = it.notes
+            }
+        })
     }
 
 

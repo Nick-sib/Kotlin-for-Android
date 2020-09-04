@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.item_note.view.*
 
 class NotesRVAdapter : RecyclerView.Adapter<NotesRVAdapter.ViewHolder>() {
 
-    private var notes: List<Note> = listOf()
+    var notes: List<Note> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
