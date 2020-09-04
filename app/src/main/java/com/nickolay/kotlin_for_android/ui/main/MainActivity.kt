@@ -16,9 +16,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        viewModel.viewData.observe(this, { tvMessage.text = it })
 
-        bClicker.setOnClickListener { viewModel.doClick() }
+//        viewModel.viewData.observe(this, { tvMessage.text = it })
+//
+//        bClicker.setOnClickListener { viewModel.doClick() }
     }
 
 

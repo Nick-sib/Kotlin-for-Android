@@ -1,26 +1,19 @@
 package com.nickolay.kotlin_for_android.ui.main
 
 import androidx.lifecycle.*
-import com.nickolay.kotlin_for_android.ModelRepository
+import com.nickolay.kotlin_for_android.data.NotesRepository
 import com.nickolay.kotlin_for_android.OnDataCallback
+import com.nickolay.kotlin_for_android.ui.Adapter.NotesRVAdapter
 
 class MainViewModel: ViewModel() {
 
-    private var repoModel: ModelRepository = ModelRepository()
+    val adapter = NotesRVAdapter()
 
-    private val _viewData = MutableLiveData<String>().apply {
-        value = "Кликайте по кнопке"
+    private val _viewStateLiveData = MutableLiveData<MainViewState>().apply {
+        value = MainViewState(NotesRepository.getNotes())
     }
 
-    private val onDataReadyCallback = object : OnDataCallback {
-        override fun onDataReady(data: Int) {
-            _viewData.value = "Кликнуто ($data)"
-        }
-    }
+    val viewState: LiveData<MainViewState> = _viewStateLiveData
 
-    val viewData: LiveData<String> = _viewData
 
-    fun doClick(){
-        repoModel.doClick(onDataReadyCallback)
-    }
 }
