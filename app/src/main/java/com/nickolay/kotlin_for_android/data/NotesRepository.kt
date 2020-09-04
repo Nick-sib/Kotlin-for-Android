@@ -7,7 +7,7 @@ import com.nickolay.kotlin_for_android.data.entity.Note
 
 
 object NotesRepository{
-    private val notes: List<Note> = listOf(
+    var notes: List<Note> = listOf(
             Note(
                     "Первая заметка",
                     "Текст первой заметки. Не очень длинный, но интересный",
@@ -39,9 +39,7 @@ object NotesRepository{
                     0xffffeb3b.toInt()
             )
     )
+    private set
 
-    fun getNotes(): List<Note> {
-        return notes
-    }
 
 }

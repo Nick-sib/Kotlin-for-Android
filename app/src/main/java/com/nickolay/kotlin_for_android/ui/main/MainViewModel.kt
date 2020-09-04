@@ -10,7 +10,7 @@ class MainViewModel: ViewModel() {
     val adapter = NotesRVAdapter()
 
     private val _viewStateLiveData = MutableLiveData<MainViewState>().apply {
-        value = MainViewState(NotesRepository.getNotes())
+        value = MainViewState(NotesRepository.notes)
     }
 
     val viewState: LiveData<MainViewState> = _viewStateLiveData
