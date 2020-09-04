@@ -24,10 +24,10 @@ class NotesRVAdapter : RecyclerView.Adapter<NotesRVAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(notes[position])
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(note: Note) = with(itemView) {
-            tv_title.text = note.title
-            tv_text.text = note.text
-            setBackgroundColor(note.color)
+        fun bind(note: Note) = with(note) {
+            itemView.tv_title.text = title
+            itemView.tv_text.text = text
+            itemView.setBackgroundColor(color)
         }
     }
 
