@@ -1,4 +1,4 @@
-package com.nickolay.kotlin_for_android.ui.Adapter
+package com.nickolay.kotlin_for_android.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View

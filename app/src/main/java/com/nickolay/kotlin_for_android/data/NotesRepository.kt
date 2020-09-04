@@ -1,8 +1,5 @@
 package com.nickolay.kotlin_for_android.data
 
-import android.os.Handler
-import android.os.Looper
-import com.nickolay.kotlin_for_android.OnDataCallback
 import com.nickolay.kotlin_for_android.data.entity.Note
 
 
