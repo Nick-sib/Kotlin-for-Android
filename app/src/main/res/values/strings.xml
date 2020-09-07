@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Kotlin-for-Android</string>
-    <string name="button_name">Click me</string>
+    <string name="bar_title">Notes App</string>
+    <string name="s_mi_theme">Change theme</string>
 </resources>
