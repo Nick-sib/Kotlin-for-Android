@@ -1,6 +1,7 @@
 package com.nickolay.kotlin_for_android.data.entity
 
 import android.os.Parcelable
+import com.nickolay.kotlin_for_android.R
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
@@ -9,7 +10,7 @@ data class Note(
         val id: String,
         var title: String,
         var text: String,
-        var color: Int,
+        var color: Color = Color.WHITE,
         var lastChanged: Date = Date()): Parcelable {
 
 
@@ -21,12 +22,15 @@ data class Note(
             else -> true
         }
 
+    override fun hashCode() = id.hashCode()
 
-    override fun hashCode(): Int {
-        var result = id.hashCode()
-        result = 31 * result + title.hashCode()
-        result = 31 * result + text.hashCode()
-        result = 31 * result + color
-        return result
+    enum class Color(val id: Int) {
+        WHITE(R.color.color_white),
+        YELLOW(R.color.color_yellow),
+        GREEN(R.color.color_green),
+        BLUE(R.color.color_blue),
+        RED(R.color.color_red),
+        VIOLET(R.color.color_violet),
+        PINK(R.color.color_pink)
     }
 }

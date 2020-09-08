@@ -1,39 +1,46 @@
 package com.nickolay.kotlin_for_android.data
 
 import com.nickolay.kotlin_for_android.data.entity.Note
+import java.util.*
 
 
 object NotesRepository{
     var notes: List<Note> = listOf(
             Note(
+                    UUID.randomUUID().toString(),
                     "Первая заметка",
                     "Текст первой заметки. Не очень длинный, но интересный",
-                    0xfff06292.toInt()
+                    Note.Color.BLUE
             ),
             Note(
+                    UUID.randomUUID().toString(),
                     "Вторая заметка",
                     "Текст второй заметки. Не очень длинный, но интересный",
-                    0xff9575cd.toInt()
+                    Note.Color.GREEN
             ),
             Note(
+                    UUID.randomUUID().toString(),
                     "Третья заметка",
                     "Текст третьей заметки. Не очень длинный, но интересный",
-                    0xff64b5f6.toInt()
+                    Note.Color.PINK
             ),
             Note(
+                    UUID.randomUUID().toString(),
                     "Четвертая заметка",
                     "Текст четвертой заметки. Не очень длинный, но интересный",
-                    0xff4db6ac.toInt()
+                    Note.Color.RED
             ),
             Note(
+                    UUID.randomUUID().toString(),
                     "Пятая заметка",
                     "Текст пятой заметки. Не очень длинный, но интересный",
-                    0xffb2ff59.toInt()
+                    Note.Color.YELLOW
             ),
             Note(
+                    UUID.randomUUID().toString(),
                     "Шестая заметка",
                     "Текст шестой заметки. Не очень длинный, но интересный",
-                    0xffffeb3b.toInt()
+                    Note.Color.VIOLET
             )
     )
     private set

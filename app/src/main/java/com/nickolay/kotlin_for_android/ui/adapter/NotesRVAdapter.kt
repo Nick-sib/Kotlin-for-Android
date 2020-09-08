@@ -3,6 +3,7 @@ package com.nickolay.kotlin_for_android.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.nickolay.kotlin_for_android.R
 import com.nickolay.kotlin_for_android.data.entity.Note
@@ -27,7 +28,7 @@ class NotesRVAdapter : RecyclerView.Adapter<NotesRVAdapter.ViewHolder>() {
         fun bind(note: Note) = with(note) {
             itemView.tv_title.text = title
             itemView.tv_text.text = text
-            itemView.setBackgroundColor(color)
+            itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, color.id))
         }
     }
 
