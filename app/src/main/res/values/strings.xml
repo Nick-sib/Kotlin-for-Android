@@ -4,4 +4,5 @@
     <string name="s_mi_theme">Change theme</string>
     <string name="note_title_hint">введите заголовок</string>
     <string name="note_body_hint">Текст заметки</string>
+    <string name="new_note_title">Title</string>
 </resources>
