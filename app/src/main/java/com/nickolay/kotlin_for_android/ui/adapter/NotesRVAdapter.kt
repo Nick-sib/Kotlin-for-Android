@@ -9,7 +9,7 @@ import com.nickolay.kotlin_for_android.R
 import com.nickolay.kotlin_for_android.data.entity.Note
 import kotlinx.android.synthetic.main.item_note.view.*
 
-class NotesRVAdapter : RecyclerView.Adapter<NotesRVAdapter.ViewHolder>() {
+class NotesRVAdapter(val onItemClick: ((Note) -> Unit)? = null) : RecyclerView.Adapter<NotesRVAdapter.ViewHolder>() {
 
     var notes: List<Note> = listOf()
         set(value) {
@@ -24,11 +24,15 @@ class NotesRVAdapter : RecyclerView.Adapter<NotesRVAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(notes[position])
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(note: Note) = with(note) {
             itemView.tv_title.text = title
             itemView.tv_text.text = text
             itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, color.id))
+
+            itemView.setOnClickListener{
+                onItemClick?.invoke(note)
+            }
         }
     }
 

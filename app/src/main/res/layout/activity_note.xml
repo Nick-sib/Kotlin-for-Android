@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/def_margin"
         android:autofillHints="@string/note_body_hint"
-        android:inputType="textAutoCorrect"
+        android:inputType="textMultiLine"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
         tools:layout_editor_absoluteX="5dp" />
 

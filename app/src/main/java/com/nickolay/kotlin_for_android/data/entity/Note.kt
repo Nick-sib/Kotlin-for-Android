@@ -8,10 +8,10 @@ import java.util.*
 @Parcelize
 data class Note(
         val id: String,
-        var title: String,
-        var text: String,
-        var color: Color = Color.WHITE,
-        var lastChanged: Date = Date()): Parcelable {
+        val title: String,
+        val text: String,
+        val color: Color = Color.GREEN,
+        val lastChanged: Date = Date()): Parcelable {
 
 
     override fun equals(other: Any?) =
