@@ -2,4 +2,6 @@
     <string name="app_name">Kotlin-for-Android</string>
     <string name="bar_title">Notes App</string>
     <string name="s_mi_theme">Change theme</string>
+    <string name="note_title_hint">введите заголовок</string>
+    <string name="note_body_hint">Текст заметки</string>
 </resources>
