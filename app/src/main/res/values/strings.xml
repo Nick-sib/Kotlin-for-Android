@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Kotlin-for-Android</string>
+    <string name="app_name" translatable="false">Kotlin-for-Android</string>
     <string name="s_mi_theme">Change theme</string>
-    <string name="note_title_hint">Bведите заголовок</string>
-    <string name="note_body_hint">Текст заметки</string>
+    <string name="note_title_hint">Input title</string>
+    <string name="note_body_hint">Note text</string>
     <string name="new_note_title">New note</string>
 </resources>

@@ -38,7 +38,7 @@ class FABBehavior(context: Context, attributeSet: AttributeSet)
 
 
 
-        if (dyConsumed > 50 && child.visibility == View.VISIBLE) {
+        if (dyConsumed > 0 && child.visibility == View.VISIBLE) {
             child.hide(object : FloatingActionButton.OnVisibilityChangedListener() {
 
                 @SuppressLint("RestrictedApi")
