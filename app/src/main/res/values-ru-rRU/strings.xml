@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="note_body_hint">Текст заметки</string>
+    <string name="new_note_title">Новая заметка</string>
+    <string name="s_mi_theme">Сменить тему</string>
+    <string name="note_title_hint">Bведите заголовок</string>
+</resources>
