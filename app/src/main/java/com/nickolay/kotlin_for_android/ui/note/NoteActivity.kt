@@ -73,10 +73,9 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>(){// AppCompatActivity()
             toolbar.setBackgroundColor(ResourcesCompat.getColor(resources, it.color.id, null))
         }
 
-        if (addListner){
-            tietTitle.afterTextChanged { saveNote() }
-            etBody.afterTextChanged { saveNote() }
-        }
+
+        tietTitle.afterTextChanged { saveNote() }
+        etBody.afterTextChanged { saveNote() }
     }
 
 
@@ -88,11 +87,10 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>(){// AppCompatActivity()
         } ?: return
 
         note = note?.copy(
-            title = genNewID(),
+            title = tietTitle.text.toString(),
             text = etBody.text.toString(),
             lastChanged = Date()
         ) ?: Note(
-                UUID.randomUUID().toString(),
                 title = tietTitle.text.toString(),
                 text = etBody.text.toString()
         )
