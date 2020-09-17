@@ -1,5 +1,6 @@
 package com.nickolay.kotlin_for_android.ui.note
 
+import androidx.lifecycle.Observer
 import com.nickolay.kotlin_for_android.data.NotesRepository
 import com.nickolay.kotlin_for_android.data.entity.Note
 import com.nickolay.kotlin_for_android.data.model.NoteResult
@@ -18,14 +19,18 @@ class NoteViewModel: BaseViewModel<Note?, NoteViewState>() {
     }
 
     fun loadNote(noteID: String){
-        //TODO: Удалить обзервер 2:17:00
-        NotesRepository.getNoteByID(noteID).observeForever { result ->
-            result ?: return@observeForever
-            when(result){
-                is NoteResult.Success<*> ->  viewStateLiveData.value = NoteViewState(note = result.data as? Note)
-                is NoteResult.Error -> viewStateLiveData.value = NoteViewState(error = result.error)
+        val noteLiveData = NotesRepository.getNoteByID(noteID)
+
+        noteLiveData.observeForever(object : Observer<NoteResult> {
+            override fun onChanged(result: NoteResult?) {
+                result ?: return
+                when(result) {
+                    is NoteResult.Success<*> ->  viewStateLiveData.value = NoteViewState(note = result.data as? Note)
+                    is NoteResult.Error -> viewStateLiveData.value = NoteViewState(error = result.error)
+                }
+                noteLiveData.removeObserver(this)
             }
-        }
+        })
     }
 
     override fun onCleared() {
