@@ -2,19 +2,19 @@ package com.nickolay.kotlin_for_android.ui.main
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.nickolay.kotlin_for_android.R
+import com.nickolay.kotlin_for_android.data.entity.Note
 import com.nickolay.kotlin_for_android.ui.adapter.NotesRVAdapter
+import com.nickolay.kotlin_for_android.ui.base.BaseActivity
 import com.nickolay.kotlin_for_android.ui.note.NoteActivity
 
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
 
     private var isDark = false
 
@@ -28,30 +28,28 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private lateinit var viewModel: MainViewModel
-
+    override val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
+    override val layoutRes = R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        Log.d("myLOG", "onCreate")
+
         initTheme()
 
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
-
         rv_notes.adapter = NotesRVAdapter{
-            NoteActivity.start(this, it)
+            NoteActivity.start(this, it.id)
         }
-
-        viewModel.viewState.observe(this, { value ->
-            value?.let {
-                (rv_notes.adapter as NotesRVAdapter).notes = it.notes
-            }
-        })
 
         fab.setOnClickListener {
             NoteActivity.start(this)
+        }
+    }
+
+    override fun renderData(data: List<Note>?) {
+        data?.let {
+            (rv_notes.adapter as NotesRVAdapter).notes = it
         }
     }
 

@@ -1,5 +1,6 @@
 package com.nickolay.kotlin_for_android.data.provider
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
@@ -36,7 +37,7 @@ class FirestoreProvider : DataProvider {
             }.addOnFailureListener {
                 result.value = NoteResult.Error(it)
             }
-
+        Log.d("myLOG", "saveNote: ")
         return result
     }
 

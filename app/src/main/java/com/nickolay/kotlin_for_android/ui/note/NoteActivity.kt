@@ -12,23 +12,21 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import com.nickolay.kotlin_for_android.R
 import com.nickolay.kotlin_for_android.data.entity.Note
+import com.nickolay.kotlin_for_android.data.entity.genNewID
+import com.nickolay.kotlin_for_android.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_note.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NoteActivity : AppCompatActivity() {
-    companion object {
-        private const val DATE_TIME_FORMAT = "dd.MM.yy HH:mm"
-        private val EXTRA_NOTE = NoteActivity::class.java.name + "extra.NOTE"
+class NoteActivity : BaseActivity<Note?, NoteViewState>(){// AppCompatActivity() {
 
-        fun start(context: Context, note: Note? = null): Intent = Intent(context, NoteActivity::class.java).apply {
-            putExtra(EXTRA_NOTE, note)
-            context.startActivity(this)
-        }
+    override val viewModel by lazy {
+        ViewModelProvider(this).get(NoteViewModel::class.java)
     }
+    override val layoutRes = R.layout.activity_note
 
     private var note: Note? = null
-    private lateinit var viewModel: NoteViewModel
+
 
     private fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
         this.addTextChangedListener(object : TextWatcher {
@@ -42,47 +40,55 @@ class NoteActivity : AppCompatActivity() {
         })
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_note)
 
-        viewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
-
-        note = intent.getParcelableExtra(EXTRA_NOTE)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        supportActionBar?.title = note?.let {
-            SimpleDateFormat(DATE_TIME_FORMAT,
-                    Locale.getDefault()).format(note!!.lastChanged)
-        } ?: getString(R.string.new_note_title)
+        val noteID = intent.getStringExtra(EXTRA_NOTE)
 
-
-        initView()
+        noteID?.let {
+            viewModel.loadNote(it)
+        } ?: let {
+            supportActionBar?.title =  getString(R.string.new_note_title)
+            initView(true)
+        }
     }
 
-    private fun initView() {
+    override fun renderData(data: Note?) {
+        this.note = data
+        supportActionBar?.title = note?.let {
+            SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault()).format(it.lastChanged)
+        } ?: getString(R.string.new_note_title)
+        initView(false)
+    }
+
+    private fun initView(addListner: Boolean) {
+        //TODO подумать как избавиться от addListner
+
         note?.let {
-            tietTitle.setText(note?.title ?: "")
-            etBody.setText(note?.text ?: "")
-            toolbar.setBackgroundColor(ResourcesCompat.getColor(resources, note!!.color.id, null))
+            tietTitle.setTextKeepState(it?.title ?: "")
+            etBody.setTextKeepState(it?.text ?: "")
+            toolbar.setBackgroundColor(ResourcesCompat.getColor(resources, it.color.id, null))
         }
 
-        tietTitle.afterTextChanged { saveNote() }
-        etBody.afterTextChanged { saveNote() }
-
+        if (addListner){
+            tietTitle.afterTextChanged { saveNote() }
+            etBody.afterTextChanged { saveNote() }
+        }
     }
 
 
     private fun saveNote() {
+
         tietTitle.text?.let {
             if (it.length < 3)
                 return
         } ?: return
 
         note = note?.copy(
-            title = tietTitle.text.toString(),
+            title = genNewID(),
             text = etBody.text.toString(),
             lastChanged = Date()
         ) ?: Note(
@@ -104,4 +110,14 @@ class NoteActivity : AppCompatActivity() {
         else -> super.onOptionsItemSelected(item)
     }
 
+
+    companion object {
+        private const val DATE_TIME_FORMAT = "dd.MM.yy HH:mm"
+        private val EXTRA_NOTE = NoteActivity::class.java.name + "extra.NOTE"
+
+        fun start(context: Context, noteID: String? = null): Intent = Intent(context, NoteActivity::class.java).apply {
+            putExtra(EXTRA_NOTE, noteID)
+            context.startActivity(this)
+        }
+    }
 }
