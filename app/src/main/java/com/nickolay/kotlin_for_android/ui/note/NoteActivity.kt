@@ -25,18 +25,14 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>(){
 
     private var note: Note? = null
 
-
-    private fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-        this.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun afterTextChanged(editable: Editable?) {
-                afterTextChanged.invoke(editable.toString())
-            }
-        })
+    val textWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+            saveNote()
+        }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +59,9 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>(){
     }
 
     private fun initView() {
-        //TODO подумать как избавиться от addListner
+
+        tietTitle.removeTextChangedListener(textWatcher)
+        etBody.removeTextChangedListener(textWatcher)
 
         note?.let {
             tietTitle.setTextKeepState(it.title)
@@ -71,9 +69,8 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>(){
             toolbar.setBackgroundColor(ResourcesCompat.getColor(resources, it.color.id, null))
         }
 
-
-        tietTitle.afterTextChanged { saveNote() }
-        etBody.afterTextChanged { saveNote() }
+        tietTitle.addTextChangedListener (textWatcher)
+        etBody.addTextChangedListener (textWatcher)
     }
 
 
