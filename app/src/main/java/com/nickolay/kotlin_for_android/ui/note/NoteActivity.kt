@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
-import android.widget.EditText
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import com.nickolay.kotlin_for_android.R
