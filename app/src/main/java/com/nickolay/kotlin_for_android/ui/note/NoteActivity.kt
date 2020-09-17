@@ -7,18 +7,16 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import com.nickolay.kotlin_for_android.R
 import com.nickolay.kotlin_for_android.data.entity.Note
-import com.nickolay.kotlin_for_android.data.entity.genNewID
 import com.nickolay.kotlin_for_android.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_note.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NoteActivity : BaseActivity<Note?, NoteViewState>(){// AppCompatActivity() {
+class NoteActivity : BaseActivity<Note?, NoteViewState>(){
 
     override val viewModel by lazy {
         ViewModelProvider(this).get(NoteViewModel::class.java)
@@ -52,7 +50,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>(){// AppCompatActivity()
             viewModel.loadNote(it)
         } ?: let {
             supportActionBar?.title =  getString(R.string.new_note_title)
-            initView(true)
+            initView()
         }
     }
 
@@ -61,15 +59,15 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>(){// AppCompatActivity()
         supportActionBar?.title = note?.let {
             SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault()).format(it.lastChanged)
         } ?: getString(R.string.new_note_title)
-        initView(false)
+        initView()
     }
 
-    private fun initView(addListner: Boolean) {
+    private fun initView() {
         //TODO подумать как избавиться от addListner
 
         note?.let {
-            tietTitle.setTextKeepState(it?.title ?: "")
-            etBody.setTextKeepState(it?.text ?: "")
+            tietTitle.setTextKeepState(it.title)
+            etBody.setTextKeepState(it.text)
             toolbar.setBackgroundColor(ResourcesCompat.getColor(resources, it.color.id, null))
         }
 
