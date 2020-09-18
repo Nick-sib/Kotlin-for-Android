@@ -12,11 +12,13 @@ import com.nickolay.kotlin_for_android.data.errors.NoAuthException
 
 abstract class BaseActivity<T, S: BaseViewState<T>>: AppCompatActivity() {
     abstract val viewModel: BaseViewModel<T, S>
-    abstract val layoutRes: Int
+    abstract val layoutRes: Int?
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layoutRes)
+        layoutRes ?.let {
+            setContentView(it)
+        }
 
         viewModel.viewState.observe(this, Observer {state ->
             state ?: return@Observer

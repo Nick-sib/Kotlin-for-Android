@@ -1,6 +1,7 @@
 package com.nickolay.kotlin_for_android.ui.main
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatDelegate
@@ -87,6 +88,11 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
         private const val PREFS_KEY_THEME = "theme"
         private const val THEME_LIGHT = 0
         private const val THEME_DARK = 1
+
+
+        fun start(context: Context) = Intent(context, MainActivity::class.java).apply {
+            context.startActivity(this)
+        }
     }
 
 

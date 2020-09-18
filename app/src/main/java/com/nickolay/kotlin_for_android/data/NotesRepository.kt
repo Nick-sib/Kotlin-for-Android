@@ -9,8 +9,8 @@ object NotesRepository{
 
     private val dataProvider: DataProvider = FirestoreProvider()
 
+    fun getCurrentUser() = dataProvider.getCurrentUser()
     fun getNotes() = dataProvider.subscribeToAllNotes()
     fun saveNote(note: Note) = dataProvider.saveNote(note)
     fun getNoteByID(id: String) = dataProvider.getNoteByID(id)
-
 }
