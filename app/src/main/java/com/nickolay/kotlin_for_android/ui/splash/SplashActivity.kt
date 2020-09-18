@@ -1,8 +1,9 @@
 package com.nickolay.kotlin_for_android.ui.splash
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.ViewModelProvider
 import com.nickolay.kotlin_for_android.ui.base.BaseActivity
-import com.nickolay.kotlin_for_android.ui.base.BaseViewModel
 import com.nickolay.kotlin_for_android.ui.main.MainActivity
 
 class SplashActivity: BaseActivity<Boolean?, SplashViewState>() {
@@ -13,7 +14,7 @@ class SplashActivity: BaseActivity<Boolean?, SplashViewState>() {
     override val layoutRes: Int? = null
 
     override fun renderData(data: Boolean?) {
-        data?.takeIf { it }.let {
+        data?.takeIf { it }.also {
             startMainActivity()
         }
     }
@@ -23,4 +24,12 @@ class SplashActivity: BaseActivity<Boolean?, SplashViewState>() {
         finish()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.requestUser()
+        /*Handler(Looper.getMainLooper()).postDelayed(
+                {viewModel.requestUser()},
+                1000
+        )*/
+    }
 }
