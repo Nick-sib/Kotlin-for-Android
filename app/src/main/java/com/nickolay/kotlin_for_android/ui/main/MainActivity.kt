@@ -23,10 +23,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.LogoutListener {
 
-    private var isDark = false
-
-    private fun saveKey(theme: Int) = sharedPrefs.edit().putInt(PREFS_KEY_THEME, theme).apply()
-    private fun loadKey() = sharedPrefs.getInt(PREFS_KEY_THEME, 0)
+    private fun saveKey(theme: Int) = sharedPrefs.edit().putInt(App.PREFS_KEY_THEME, theme).apply()
 
     private val sharedPrefs by lazy {
         getSharedPreferences(
@@ -62,12 +59,9 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
 
     private fun initTheme() {
         val menuItem = bottomAppBar.menu.findItem(R.id.mi_theme)
-        isDark = loadKey() == THEME_DARK
-        if (isDark) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        if (App.isDark) {
             menuItem.setIcon(R.drawable.ic_day_24)
         } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             menuItem.setIcon(R.drawable.ic_night_24)
         }
     }
@@ -80,15 +74,13 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
     override fun onCreateOptionsMenu(menu: Menu?): Boolean =
             MenuInflater(this).inflate(R.menu.main_menu, menu).let { true }
 
-
-
     fun onOptionsItemSelect(item: MenuItem) {
         when (item.itemId){
             R.id.mi_theme -> {
-                    if (isDark){
-                        setTheme(AppCompatDelegate.MODE_NIGHT_NO, THEME_LIGHT)
+                    if (App.isDark){
+                        setTheme(AppCompatDelegate.MODE_NIGHT_NO, App.THEME_LIGHT)
                     } else {
-                        setTheme(AppCompatDelegate.MODE_NIGHT_YES, THEME_DARK)
+                        setTheme(AppCompatDelegate.MODE_NIGHT_YES, App.THEME_DARK)
                     }
                 }
             R.id.mi_logout -> {
@@ -112,14 +104,11 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
 
 
     companion object{
-        private const val PREFS_KEY_THEME = "theme"
-        private const val THEME_LIGHT = 0
-        private const val THEME_DARK = 1
-
-
         fun start(context: Context) = Intent(context, MainActivity::class.java).apply {
             context.startActivity(this)
         }
+
+
     }
 
 

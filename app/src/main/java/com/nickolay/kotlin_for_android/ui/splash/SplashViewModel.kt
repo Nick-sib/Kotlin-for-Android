@@ -6,7 +6,7 @@ import com.nickolay.kotlin_for_android.data.entity.User
 import com.nickolay.kotlin_for_android.data.errors.NoAuthException
 import com.nickolay.kotlin_for_android.ui.base.BaseViewModel
 
-class SplashViewModel(): BaseViewModel<Boolean?, SplashViewState>(){
+class SplashViewModel: BaseViewModel<Boolean?, SplashViewState>(){
     fun requestUser() {
         NotesRepository.getCurrentUser().observeForever(object : Observer<User?> {
             override fun onChanged(result: User?) {
