@@ -1,7 +1,5 @@
 package com.nickolay.kotlin_for_android.ui.splash
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.ViewModelProvider
 import com.nickolay.kotlin_for_android.ui.base.BaseActivity
 import com.nickolay.kotlin_for_android.ui.main.MainActivity
