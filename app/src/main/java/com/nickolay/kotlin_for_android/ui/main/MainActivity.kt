@@ -3,7 +3,6 @@ package com.nickolay.kotlin_for_android.ui.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -89,7 +88,7 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
         }
     }
 
-    fun showLogoutDialog() {
+    private fun showLogoutDialog() {
         supportFragmentManager.findFragmentByTag(LogoutDialog.TAG) ?: LogoutDialog().show(supportFragmentManager, LogoutDialog.TAG)
     }
 
@@ -102,13 +101,10 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
                 }
     }
 
-
     companion object{
         fun start(context: Context) = Intent(context, MainActivity::class.java).apply {
             context.startActivity(this)
         }
-
-
     }
 
 
