@@ -7,9 +7,9 @@ import java.util.*
 
 @Parcelize
 data class Note(
-        val id: String,
-        val title: String,
-        val text: String,
+        val id: String = genNewID(),
+        val title: String = "",
+        val text: String = "",
         val color: Color = Color.GREEN,
         val lastChanged: Date = Date()): Parcelable {
 
@@ -33,4 +33,7 @@ data class Note(
         VIOLET(R.color.color_violet),
         PINK(R.color.color_pink)
     }
+
 }
+
+fun genNewID()= UUID.randomUUID().toString()

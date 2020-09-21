@@ -2,19 +2,30 @@ package com.nickolay.kotlin_for_android.ui.main
 
 import androidx.lifecycle.*
 import com.nickolay.kotlin_for_android.data.NotesRepository
+import com.nickolay.kotlin_for_android.data.entity.Note
+import com.nickolay.kotlin_for_android.data.model.NoteResult
+import com.nickolay.kotlin_for_android.ui.base.BaseViewModel
 
-class MainViewModel : ViewModel() {
+class MainViewModel : BaseViewModel<List<Note>?, MainViewState>() {
 
-    private val _viewStateLiveData = MutableLiveData<MainViewState>()
+    private val repositoryNotes = NotesRepository.getNotes()
+
+    private val notesObserver = Observer<NoteResult> {
+        it ?: return@Observer
+        when (it){
+            is NoteResult.Success<*> -> viewStateLiveData.value = MainViewState(notes = it.data as? List<Note> )
+            is NoteResult.Error -> viewStateLiveData.value = MainViewState(error = it.error)
+        }
+    }
 
     init {
-        NotesRepository.notesLiveData.observeForever{
-            _viewStateLiveData.value = _viewStateLiveData.value?.copy(notes = it) ?: MainViewState(it)
-        }
+        viewStateLiveData.value = MainViewState()
+        repositoryNotes.observeForever (notesObserver)
 
     }
 
-    val viewState: LiveData<MainViewState> = _viewStateLiveData
-
-
+    override fun onCleared() {
+        super.onCleared()
+        repositoryNotes.removeObserver(notesObserver)
+    }
 }
