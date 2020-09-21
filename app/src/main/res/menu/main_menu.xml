@@ -16,6 +16,6 @@
         android:icon="@drawable/ic_exit_24"
         android:title="@string/logout_menu_title"
         android:onClick="onOptionsItemSelect"
-        app:showAsAction="never"/>
+        app:showAsAction="ifRoom"/>
 
 </menu>
