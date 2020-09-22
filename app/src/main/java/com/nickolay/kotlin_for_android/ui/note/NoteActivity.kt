@@ -1,10 +1,12 @@
 package com.nickolay.kotlin_for_android.ui.note
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Menu
 import android.view.MenuItem
 import androidx.core.content.res.ResourcesCompat
 import com.nickolay.kotlin_for_android.R
@@ -12,6 +14,7 @@ import com.nickolay.kotlin_for_android.data.entity.Note
 import com.nickolay.kotlin_for_android.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_note.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
 import java.util.*
 
 class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
@@ -40,14 +43,18 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
         noteID?.let {
             viewModel.loadNote(it)
         } ?: let {
-            supportActionBar?.title =  getString(R.string.new_note_title)
+            toolbar.title =  getString(R.string.new_note_title)
             initView()
         }
     }
 
     override fun renderData(data: NoteViewState.Data) {
-        this.note = data.note
-        initView()
+        if (data.isDeleted) {
+            finish()
+        } else {
+            this.note = data.note
+            initView()
+        }
     }
 
     private fun initView() {
@@ -59,6 +66,7 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
             tietTitle.setTextKeepState(it.title)
             etBody.setTextKeepState(it.text)
             toolbar.setBackgroundColor(ResourcesCompat.getColor(resources, it.color.id, null))
+            toolbar.title = SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault()).format(it.lastChanged)
         }
 
         tietTitle.addTextChangedListener (textWatcher)
@@ -86,17 +94,35 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?) =
+            menuInflater.inflate(R.menu.note_menu, menu).let { true }
+
     override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
         android.R.id.home -> {
-            onBackPressed()
-            true
-        }
+                onBackPressed()
+                true
+            }
+        R.id.mi_note_color -> togglePallete().let{ true }
+        R.id.mi_note_delete -> deleteNote().let{ true}
         else -> super.onOptionsItemSelected(item)
     }
 
+    private fun togglePallete(){
+
+    }
+
+    private fun deleteNote(){
+        //TODO: Разобрать на диалог
+        AlertDialog.Builder(this)
+            .setTitle(R.string.dialog_delete_title)
+            .setMessage(getString(R.string.dialog_delete_message))
+            .setNegativeButton(getString(R.string.s_btn_cancel)) { dialog, _ -> dialog.dismiss() }
+            .setPositiveButton(getString(R.string.s_btn_ok)) { _, _ -> viewModel.deleteNote() }
+            .show()
+    }
 
     companion object {
-        //private const val DATE_TIME_FORMAT = "dd.MM.yy HH:mm"
+        private const val DATE_TIME_FORMAT = "dd.MM.yy HH:mm"
         private val EXTRA_NOTE = NoteActivity::class.java.name + "extra.NOTE"
 
         fun start(context: Context, noteID: String? = null): Intent = Intent(context, NoteActivity::class.java).apply {

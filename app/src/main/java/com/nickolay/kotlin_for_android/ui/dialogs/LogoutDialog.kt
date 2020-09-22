@@ -10,15 +10,15 @@ class LogoutDialog() : DialogFragment() {
 
     companion object {
         val TAG = LogoutDialog::class.java.name + "TAG"
-        fun createInstance() = LogoutDialog()
+       // fun createInstance() = LogoutDialog()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
             AlertDialog.Builder(context!!)
-                    .setTitle(R.string.logout_dialog_title)
-                    .setMessage(R.string.logout_dialog_message)
-                    .setPositiveButton(R.string.ok_btn_title) { _, _ -> (activity as LogoutListener).onLogout() }
-                    .setNegativeButton(R.string.logout_dialog_cancel) { _, _ -> dismiss() }
+                    .setTitle(R.string.dialog_logout_title)
+                    .setMessage(R.string.dialog_logout_message)
+                    .setPositiveButton(R.string.s_btn_ok) { _, _ -> (activity as LogoutListener).onLogout() }
+                    .setNegativeButton(R.string.s_btn_cancel) { _, _ -> dismiss() }
                     .create()
 
     interface LogoutListener {

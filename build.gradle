@@ -3,6 +3,7 @@ buildscript {
     ext{
         kotlin_version = '1.4.10'
         lifecycle = '2.2.0'
+        koin_version = '1.0.1'
     }
     repositories {
         google()

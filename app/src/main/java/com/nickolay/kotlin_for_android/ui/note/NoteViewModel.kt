@@ -19,7 +19,6 @@ class NoteViewModel(val notesRepository: NotesRepository): BaseViewModel<NoteVie
     }
 
     fun loadNote(noteId: String) {
-        //здесь надо удалять обзервер?
         notesRepository.getNoteByID(noteId).observeForever(object : Observer<NoteResult>{
             override fun onChanged(result: NoteResult?) {
                 result ?: return
@@ -35,6 +34,22 @@ class NoteViewModel(val notesRepository: NotesRepository): BaseViewModel<NoteVie
         })
     }
 
+    fun deleteNote() {
+        pendingNote?.let {
+            notesRepository.deleteNote(it.id).observeForever(object : Observer<NoteResult>{
+                override fun onChanged(result: NoteResult?) {
+                    result ?: return
+                    pendingNote = null
+                    when(result) {
+                        is NoteResult.Success<*> -> viewStateLiveData.value = NoteViewState(NoteViewState.Data(isDeleted = true))
+                        is NoteResult.Error -> viewStateLiveData.value = NoteViewState(error = result.error)
+                    }
+                    notesRepository.deleteNote(it.id).removeObserver(this)
+                }
+
+            })
+        }
+    }
 
     override fun onCleared() {
         pendingNote?.let {
