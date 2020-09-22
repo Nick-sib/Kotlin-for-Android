@@ -10,19 +10,19 @@ import com.nickolay.kotlin_for_android.data.errors.NoAuthException
 import com.nickolay.kotlin_for_android.data.model.NoteResult
 
 
-class FirestoreProvider : DataProvider {
+class FirestoreProvider(val firebaseAuth: FirebaseAuth, val store: FirebaseFirestore) : DataProvider {
 
-    private val currentUser
-        get() = FirebaseAuth.getInstance().currentUser
+     private val currentUser
+        get() = firebaseAuth.currentUser
 
-    private val store by lazy { FirebaseFirestore.getInstance() }
+    
     private val notesReference
             get() = currentUser ?.let {
                 store.collection(USERS_COLLECTION).document(it.uid).collection(NOTES_COLLECTION)
             } ?: throw NoAuthException()
 
 
-    override fun getCurrentUser(): LiveData<User?> = MutableLiveData<User?>().apply{
+    override fun getCurrentUser(): LiveData<User?> = MutableLiveData<User?>().apply {
         value = currentUser ?.let {
             User(it.displayName ?: "", it.email ?: "")
         }
@@ -32,13 +32,13 @@ class FirestoreProvider : DataProvider {
         try {
             notesReference.addSnapshotListener{ snapshot, e ->
                 e?.let {
-                    value = NoteResult.Error(it)
-                } ?: snapshot?.let{
-                    val notes = snapshot.documents.mapNotNull {it.toObject(Note::class.java)}
+                    
+                } ?: snapshot?.let {
+                    val notes = snapshot.documents.mapNotNull {it.toObject(Note::class.java) }
                     value = NoteResult.Success(notes)
                 }
             }
-        } catch (t: Throwable){
+        } catch (t: Throwable) {
             value = NoteResult.Error(t)
         }
     }
@@ -60,13 +60,12 @@ class FirestoreProvider : DataProvider {
         try {
             notesReference.document(id).get()
                 .addOnSuccessListener {
-                    value = NoteResult.Success(
-                        it.toObject(Note::class.java)
-                    )
+                    val note = it.toObject(Note::class.java)
+                    value = NoteResult.Success(note)
                 }.addOnFailureListener {
                     value = NoteResult.Error(it)
                 }
-        } catch (t: Throwable){
+        } catch (t: Throwable) {
             value = NoteResult.Error(t)
         }
     }
@@ -75,5 +74,4 @@ class FirestoreProvider : DataProvider {
         private const val NOTES_COLLECTION = "notes"
         private const val USERS_COLLECTION = "users"
     }
-
 }

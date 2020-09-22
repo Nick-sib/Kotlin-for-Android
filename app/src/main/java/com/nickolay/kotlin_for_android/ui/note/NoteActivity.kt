@@ -12,16 +12,14 @@ import com.nickolay.kotlin_for_android.R
 import com.nickolay.kotlin_for_android.data.entity.Note
 import com.nickolay.kotlin_for_android.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_note.*
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NoteActivity : BaseActivity<Note?, NoteViewState>(){
+class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
 
-    override val viewModel by lazy {
-        ViewModelProvider(this).get(NoteViewModel::class.java)
-    }
+    override val viewModel: NoteViewModel by viewModel()
     override val layoutRes = R.layout.activity_note
-
     private var note: Note? = null
 
     val textWatcher = object : TextWatcher {
@@ -49,11 +47,8 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>(){
         }
     }
 
-    override fun renderData(data: Note?) {
-        this.note = data
-        supportActionBar?.title = note?.let {
-            SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault()).format(it.lastChanged)
-        } ?: getString(R.string.new_note_title)
+    override fun renderData(data: NoteViewState.Data) {
+        this.note = data.note
         initView()
     }
 
@@ -74,7 +69,6 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>(){
 
 
     private fun saveNote() {
-
         tietTitle.text?.let {
             if (it.length < 3)
                 return
@@ -90,7 +84,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>(){
         )
 
         note?.let {
-            viewModel.saveChanges(it)
+            viewModel.save(it)
         }
     }
 

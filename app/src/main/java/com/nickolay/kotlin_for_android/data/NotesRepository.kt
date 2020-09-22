@@ -5,10 +5,7 @@ import com.nickolay.kotlin_for_android.data.provider.DataProvider
 import com.nickolay.kotlin_for_android.data.provider.FirestoreProvider
 
 
-object NotesRepository{
-
-    private val dataProvider: DataProvider = FirestoreProvider()
-
+class NotesRepository(val dataProvider: DataProvider){
     fun getCurrentUser() = dataProvider.getCurrentUser()
     fun getNotes() = dataProvider.subscribeToAllNotes()
     fun saveNote(note: Note) = dataProvider.saveNote(note)
