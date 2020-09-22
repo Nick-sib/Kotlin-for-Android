@@ -10,7 +10,7 @@ import com.nickolay.kotlin_for_android.data.errors.NoAuthException
 import com.nickolay.kotlin_for_android.data.model.NoteResult
 
 
-class FirestoreProvider(val firebaseAuth: FirebaseAuth, val store: FirebaseFirestore) : DataProvider {
+class FirestoreProvider(private val firebaseAuth: FirebaseAuth, private val store: FirebaseFirestore) : DataProvider {
 
      private val currentUser
         get() = firebaseAuth.currentUser
@@ -46,7 +46,7 @@ class FirestoreProvider(val firebaseAuth: FirebaseAuth, val store: FirebaseFires
     override fun saveNote(note: Note) : LiveData<NoteResult> = MutableLiveData<NoteResult>().apply {
         try {
             notesReference.document(note.id).set(note)
-                .addOnSuccessListener {snapshot ->
+                .addOnSuccessListener {
                     value = NoteResult.Success(note)
                 }.addOnFailureListener {
                     value = NoteResult.Error(it)
@@ -59,8 +59,8 @@ class FirestoreProvider(val firebaseAuth: FirebaseAuth, val store: FirebaseFires
     override fun getNoteByID(id: String) : LiveData<NoteResult> =  MutableLiveData<NoteResult>().apply {
         try {
             notesReference.document(id).get()
-                .addOnSuccessListener {snapshot ->
-                    val note = snapshot.toObject(Note::class.java)
+                .addOnSuccessListener {
+                    val note = it.toObject(Note::class.java)
                     value = NoteResult.Success(note)
                 }.addOnFailureListener {
                     value = NoteResult.Error(it)

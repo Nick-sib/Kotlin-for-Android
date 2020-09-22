@@ -1,4 +1,4 @@
-package com.nickolay.kotlin_for_android.ui.main
+package com.nickolay.kotlin_for_android
 
 import android.app.Application
 import android.content.Context
@@ -7,6 +7,7 @@ import com.nickolay.kotlin_for_android.di.appModule
 import com.nickolay.kotlin_for_android.di.mainModule
 import com.nickolay.kotlin_for_android.di.noteModule
 import com.nickolay.kotlin_for_android.di.splashModule
+import com.nickolay.kotlin_for_android.ui.main.MainActivity
 import org.koin.android.ext.android.startKoin
 
 class App: Application() {

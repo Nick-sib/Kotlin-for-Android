@@ -3,16 +3,14 @@ package com.nickolay.kotlin_for_android.ui.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.AuthUI
+import com.nickolay.kotlin_for_android.App
 import com.nickolay.kotlin_for_android.R
 import com.nickolay.kotlin_for_android.data.entity.Note
-import com.nickolay.kotlin_for_android.data.provider.FirestoreProvider
 import com.nickolay.kotlin_for_android.ui.adapter.NotesRVAdapter
 import com.nickolay.kotlin_for_android.ui.base.BaseActivity
 import com.nickolay.kotlin_for_android.ui.dialogs.LogoutDialog
@@ -20,7 +18,6 @@ import com.nickolay.kotlin_for_android.ui.note.NoteActivity
 import com.nickolay.kotlin_for_android.ui.splash.SplashActivity
 
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -35,7 +32,7 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
         )
     }
 
-    val firestoreProvider: FirestoreProvider by inject()
+    //val firestoreProvider: FirestoreProvider by inject()
     override val viewModel: MainViewModel by viewModel()
 
     override val layoutRes = R.layout.activity_main

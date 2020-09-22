@@ -26,7 +26,6 @@ abstract class BaseActivity<T, S: BaseViewState<T>>: AppCompatActivity() {
                 renderError(it)
                 return@Observer
             }
-
             renderData(state.data)
         })
 
@@ -35,7 +34,7 @@ abstract class BaseActivity<T, S: BaseViewState<T>>: AppCompatActivity() {
 
     abstract fun renderData(data: T)
 
-    protected fun renderError(error: Throwable){
+    private fun renderError(error: Throwable){
         when (error) {
             is NoAuthException -> startLogin()
             else ->  error.message ?.let {
@@ -66,7 +65,7 @@ abstract class BaseActivity<T, S: BaseViewState<T>>: AppCompatActivity() {
         }
     }
 
-    protected fun showError(message: String) {
+    private fun showError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 

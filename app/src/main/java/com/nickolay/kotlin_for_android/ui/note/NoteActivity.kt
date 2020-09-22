@@ -7,13 +7,11 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
 import androidx.core.content.res.ResourcesCompat
-import androidx.lifecycle.ViewModelProvider
 import com.nickolay.kotlin_for_android.R
 import com.nickolay.kotlin_for_android.data.entity.Note
 import com.nickolay.kotlin_for_android.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_note.*
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.text.SimpleDateFormat
 import java.util.*
 
 class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
@@ -22,7 +20,7 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
     override val layoutRes = R.layout.activity_note
     private var note: Note? = null
 
-    val textWatcher = object : TextWatcher {
+    private val textWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
             saveNote()
         }
@@ -98,7 +96,7 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
 
 
     companion object {
-        private const val DATE_TIME_FORMAT = "dd.MM.yy HH:mm"
+        //private const val DATE_TIME_FORMAT = "dd.MM.yy HH:mm"
         private val EXTRA_NOTE = NoteActivity::class.java.name + "extra.NOTE"
 
         fun start(context: Context, noteID: String? = null): Intent = Intent(context, NoteActivity::class.java).apply {
