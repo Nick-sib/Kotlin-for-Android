@@ -3,7 +3,11 @@ package com.nickolay.kotlin_for_android.ui.main
 import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
-import com.nickolay.kotlin_for_android.R
+import com.nickolay.kotlin_for_android.di.appModule
+import com.nickolay.kotlin_for_android.di.mainModule
+import com.nickolay.kotlin_for_android.di.noteModule
+import com.nickolay.kotlin_for_android.di.splashModule
+import org.koin.android.ext.android.startKoin
 
 class App: Application() {
 
@@ -38,5 +42,6 @@ class App: Application() {
         }
 
         instance = this
+        startKoin(this, listOf(appModule, splashModule, mainModule, noteModule))
     }
 }

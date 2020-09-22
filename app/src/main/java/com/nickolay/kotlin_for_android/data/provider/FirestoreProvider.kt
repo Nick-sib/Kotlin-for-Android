@@ -46,7 +46,7 @@ class FirestoreProvider(val firebaseAuth: FirebaseAuth, val store: FirebaseFires
     override fun saveNote(note: Note) : LiveData<NoteResult> = MutableLiveData<NoteResult>().apply {
         try {
             notesReference.document(note.id).set(note)
-                .addOnSuccessListener {
+                .addOnSuccessListener {snapshot ->
                     value = NoteResult.Success(note)
                 }.addOnFailureListener {
                     value = NoteResult.Error(it)
@@ -59,8 +59,8 @@ class FirestoreProvider(val firebaseAuth: FirebaseAuth, val store: FirebaseFires
     override fun getNoteByID(id: String) : LiveData<NoteResult> =  MutableLiveData<NoteResult>().apply {
         try {
             notesReference.document(id).get()
-                .addOnSuccessListener {
-                    val note = it.toObject(Note::class.java)
+                .addOnSuccessListener {snapshot ->
+                    val note = snapshot.toObject(Note::class.java)
                     value = NoteResult.Success(note)
                 }.addOnFailureListener {
                     value = NoteResult.Error(it)

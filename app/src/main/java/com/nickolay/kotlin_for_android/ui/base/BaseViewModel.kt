@@ -5,6 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 open class BaseViewModel<T, S: BaseViewState<T>>: ViewModel() {
-    val viewStateLiveData = MutableLiveData<S>()
-    val viewState: LiveData<S> = viewStateLiveData
+    open val viewStateLiveData = MutableLiveData<S>()
+    open fun getViewState(): LiveData<S> = viewStateLiveData
 }

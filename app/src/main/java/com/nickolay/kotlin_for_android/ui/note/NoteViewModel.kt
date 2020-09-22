@@ -8,11 +8,11 @@ import com.nickolay.kotlin_for_android.ui.base.BaseViewModel
 
 class NoteViewModel(val notesRepository: NotesRepository): BaseViewModel<NoteViewState.Data, NoteViewState>() {
 
-    private var pendingNote: Note? = null
-
     init {
         viewStateLiveData.value = NoteViewState()
     }
+
+    private var pendingNote: Note? = null
 
     fun save(note: Note) {
         pendingNote = note
@@ -32,7 +32,6 @@ class NoteViewModel(val notesRepository: NotesRepository): BaseViewModel<NoteVie
                 }
                 notesRepository.getNoteByID(noteId).removeObserver(this)
             }
-
         })
     }
 
