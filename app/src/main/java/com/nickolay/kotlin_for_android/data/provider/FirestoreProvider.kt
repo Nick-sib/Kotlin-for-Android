@@ -1,5 +1,6 @@
 package com.nickolay.kotlin_for_android.data.provider
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
@@ -29,12 +30,15 @@ class FirestoreProvider(private val firebaseAuth: FirebaseAuth, private val stor
     }
 
     override fun subscribeToAllNotes() : LiveData<NoteResult> = MutableLiveData<NoteResult>().apply {
+        //Логи под индикатор загрузки
         try {
             notesReference.addSnapshotListener{ snapshot, e ->
                 e?.let {
                     
                 } ?: snapshot?.let {
-                    val notes = snapshot.documents.mapNotNull {it.toObject(Note::class.java) }
+                    Log.d("myLOG", "begin: ${snapshot.documents.size}")
+                    val notes = snapshot.documents.mapNotNull {Log.d("myLOG", "1"); it.toObject(Note::class.java) }
+                    Log.d("myLOG", "end: ")
                     value = NoteResult.Success(notes)
                 }
             }

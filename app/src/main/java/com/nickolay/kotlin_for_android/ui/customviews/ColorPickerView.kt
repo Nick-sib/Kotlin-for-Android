@@ -49,9 +49,7 @@ class ColorPickerView: LinearLayout {
     constructor(context: Context) : this(context, null, 0)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        orientation = HORIZONTAL
-        gravity = Gravity.CENTER
-
+        //TODO: брать цвета не из Note
         Note.Color.values().forEach { color ->
             addView(
                     ColorCircleView(context).apply {

@@ -1,6 +1,5 @@
 package com.nickolay.kotlin_for_android.ui.note
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +11,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.nickolay.kotlin_for_android.R
 import com.nickolay.kotlin_for_android.data.entity.Note
 import com.nickolay.kotlin_for_android.ui.base.BaseActivity
+import com.nickolay.kotlin_for_android.ui.dialogs.DeleteNoteDialog
 import kotlinx.android.synthetic.main.activity_note.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
@@ -125,13 +125,7 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
     }
 
     private fun deleteNote(){
-        //TODO: Разобрать на диалог
-        AlertDialog.Builder(this)
-            .setTitle(R.string.dialog_delete_title)
-            .setMessage(getString(R.string.dialog_delete_message))
-            .setNegativeButton(getString(R.string.s_btn_cancel)) { dialog, _ -> dialog.dismiss() }
-            .setPositiveButton(getString(R.string.s_btn_ok)) { _, _ -> viewModel.deleteNote() }
-            .show()
+            supportFragmentManager.findFragmentByTag(DeleteNoteDialog.TAG) ?: DeleteNoteDialog().show(supportFragmentManager, DeleteNoteDialog.TAG)
     }
 
     companion object {

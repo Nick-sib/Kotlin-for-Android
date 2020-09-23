@@ -8,11 +8,6 @@ import com.nickolay.kotlin_for_android.R
 
 class LogoutDialog() : DialogFragment() {
 
-    companion object {
-        val TAG = LogoutDialog::class.java.name + "TAG"
-       // fun createInstance() = LogoutDialog()
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
             AlertDialog.Builder(context!!)
                     .setTitle(R.string.dialog_logout_title)
@@ -25,4 +20,8 @@ class LogoutDialog() : DialogFragment() {
         fun onLogout()
     }
 
+    companion object {
+        val TAG = LogoutDialog::class.java.name + "TAG"
+        // fun createInstance() = LogoutDialog()
+    }
 }
