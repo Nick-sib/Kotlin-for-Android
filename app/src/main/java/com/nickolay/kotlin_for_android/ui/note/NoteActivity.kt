@@ -23,6 +23,8 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
     override val layoutRes = R.layout.activity_note
     private var note: Note? = null
 
+    private var color: Note.Color = Note.Color.WHITE
+
     private val textWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
             saveNote()
@@ -71,8 +73,13 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
 
         tietTitle.addTextChangedListener (textWatcher)
         etBody.addTextChangedListener (textWatcher)
-    }
 
+        colorPicker.onColorClickListener = {
+            color = it
+            toolbar.setBackgroundColor(getColor(it.id))
+            saveNote()
+        }
+    }
 
     private fun saveNote() {
         tietTitle.text?.let {
@@ -83,10 +90,12 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
         note = note?.copy(
             title = tietTitle.text.toString(),
             text = etBody.text.toString(),
-            lastChanged = Date()
+            lastChanged = Date(),
+            color = color
         ) ?: Note(
                 title = tietTitle.text.toString(),
-                text = etBody.text.toString()
+                text = etBody.text.toString(),
+                color = color
         )
 
         note?.let {
@@ -108,7 +117,11 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
     }
 
     private fun togglePallete(){
-
+        if (colorPicker.isOpen) {
+            colorPicker.close()
+        } else {
+            colorPicker.open()
+        }
     }
 
     private fun deleteNote(){

@@ -15,4 +15,5 @@
     <color name="color_pink">#f8bbd0</color>
     <color name="white">#FFF</color>
     <color name="stroke_color">#33FFFFFF</color>
+    <color name="color_circle_stroke">#66000000</color>
 </resources>
