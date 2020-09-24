@@ -7,7 +7,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.nickolay.kotlin_for_android.R
 import com.nickolay.kotlin_for_android.data.entity.Note
-import kotlinx.android.synthetic.main.item_note.view.*
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_note.*
 
 class NotesRVAdapter(val onItemClick: ((Note) -> Unit)? = null) : RecyclerView.Adapter<NotesRVAdapter.ViewHolder>() {
 
@@ -24,13 +25,13 @@ class NotesRVAdapter(val onItemClick: ((Note) -> Unit)? = null) : RecyclerView.A
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(notes[position])
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(note: Note) = with(note) {
-            itemView.tv_title.text = title
-            itemView.tv_text.text = text
-            itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, color.id))
+    inner class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+        fun bind(note: Note) {
+            tv_title.text = note.title
+            tv_text.text = note.text
+            itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, note.color.id))
 
-            itemView.setOnClickListener{
+            itemView.setOnClickListener {
                 onItemClick?.invoke(note)
             }
         }

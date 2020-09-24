@@ -20,13 +20,12 @@ abstract class BaseActivity<T, S: BaseViewState<T>>: AppCompatActivity() {
             setContentView(it)
         }
 
-        viewModel.viewState.observe(this, Observer {state ->
+        viewModel.getViewState().observe(this, Observer {state ->
             state ?: return@Observer
             state.error?.let {
                 renderError(it)
                 return@Observer
             }
-
             renderData(state.data)
         })
 
@@ -35,10 +34,12 @@ abstract class BaseActivity<T, S: BaseViewState<T>>: AppCompatActivity() {
 
     abstract fun renderData(data: T)
 
-    protected fun renderError(error: Throwable){
+    private fun renderError(error: Throwable){
         when (error) {
             is NoAuthException -> startLogin()
-            else ->  error.message ?.let { showError(it) }
+            else ->  error.message ?.let {
+                showError(it)
+            }
         }
     }
 
@@ -59,7 +60,7 @@ abstract class BaseActivity<T, S: BaseViewState<T>>: AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RC_SIGN_IN && resultCode != Activity.RESULT_OK) {
+        if (requestCode == RC_SIGN_IN && resultCode != Activity.RESULT_OK) {
             finish()
         }
     }

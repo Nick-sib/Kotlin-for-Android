@@ -33,7 +33,6 @@ data class Note(
         VIOLET(R.color.color_violet),
         PINK(R.color.color_pink)
     }
-
 }
 
 fun genNewID()= UUID.randomUUID().toString()

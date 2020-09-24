@@ -6,15 +6,15 @@ import com.nickolay.kotlin_for_android.data.entity.User
 import com.nickolay.kotlin_for_android.data.errors.NoAuthException
 import com.nickolay.kotlin_for_android.ui.base.BaseViewModel
 
-class SplashViewModel: BaseViewModel<Boolean?, SplashViewState>(){
+class SplashViewModel(val notesRepository: NotesRepository): BaseViewModel<Boolean?, SplashViewState>(){
     fun requestUser() {
-        NotesRepository.getCurrentUser().observeForever(object : Observer<User?> {
+        notesRepository.getCurrentUser().observeForever(object : Observer<User?> {
             override fun onChanged(result: User?) {
                 viewStateLiveData.value =
                         result?.let { SplashViewState(authenticated = true) }
                                 ?: SplashViewState(error = NoAuthException())
 
-                NotesRepository.getCurrentUser().removeObserver(this)
+                notesRepository.getCurrentUser().removeObserver(this)
             }
         })
     }

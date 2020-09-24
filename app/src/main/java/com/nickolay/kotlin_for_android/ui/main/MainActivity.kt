@@ -3,13 +3,12 @@ package com.nickolay.kotlin_for_android.ui.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.AuthUI
+import com.nickolay.kotlin_for_android.App
 import com.nickolay.kotlin_for_android.R
 import com.nickolay.kotlin_for_android.data.entity.Note
 import com.nickolay.kotlin_for_android.ui.adapter.NotesRVAdapter
@@ -19,22 +18,14 @@ import com.nickolay.kotlin_for_android.ui.note.NoteActivity
 import com.nickolay.kotlin_for_android.ui.splash.SplashActivity
 
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.LogoutListener {
 
-    private fun saveKey(theme: Int) = sharedPrefs.edit().putInt(App.PREFS_KEY_THEME, theme).apply()
+    //val firestoreProvider: FirestoreProvider by inject()
+    override val viewModel: MainViewModel by viewModel()
 
-    private val sharedPrefs by lazy {
-        getSharedPreferences(
-                (MainActivity::class).qualifiedName,
-                Context.MODE_PRIVATE
-        )
-    }
-
-    override val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
-    }
     override val layoutRes = R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,17 +50,12 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
 
     private fun initTheme() {
         val menuItem = bottomAppBar.menu.findItem(R.id.mi_theme)
-        if (App.isDark) {
+
+        if (App.instance.isDark) {
             menuItem.setIcon(R.drawable.ic_day_24)
         } else {
             menuItem.setIcon(R.drawable.ic_night_24)
         }
-    }
-
-    private fun setTheme(themeMode: Int, prefsMode: Int) {
-        App.isDark = themeMode == AppCompatDelegate.MODE_NIGHT_YES
-        saveKey(prefsMode)
-        AppCompatDelegate.setDefaultNightMode(themeMode)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean =
@@ -78,12 +64,8 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
     fun onOptionsItemSelect(item: MenuItem) {
         when (item.itemId){
             R.id.mi_theme -> {
-                    if (App.isDark){
-                        setTheme(AppCompatDelegate.MODE_NIGHT_NO, App.THEME_LIGHT)
-                    } else {
-                        setTheme(AppCompatDelegate.MODE_NIGHT_YES, App.THEME_DARK)
-                    }
-                }
+                App.instance.isDark = !App.instance.isDark
+            }
             R.id.mi_logout -> {
                 showLogoutDialog()
             }
@@ -108,7 +90,5 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
             context.startActivity(this)
         }
     }
-
-
 
 }

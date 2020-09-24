@@ -6,9 +6,9 @@ import com.nickolay.kotlin_for_android.data.entity.Note
 import com.nickolay.kotlin_for_android.data.model.NoteResult
 import com.nickolay.kotlin_for_android.ui.base.BaseViewModel
 
-class MainViewModel : BaseViewModel<List<Note>?, MainViewState>() {
+class MainViewModel(notesRepository: NotesRepository) : BaseViewModel<List<Note>?, MainViewState>() {
 
-    private val repositoryNotes = NotesRepository.getNotes()
+    private val repositoryNotes = notesRepository.getNotes()
 
     private val notesObserver = Observer<NoteResult> {
         it ?: return@Observer

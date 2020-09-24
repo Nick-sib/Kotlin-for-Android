@@ -1,5 +1,6 @@
 package com.nickolay.kotlin_for_android.data.provider
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
@@ -10,35 +11,38 @@ import com.nickolay.kotlin_for_android.data.errors.NoAuthException
 import com.nickolay.kotlin_for_android.data.model.NoteResult
 
 
-class FirestoreProvider : DataProvider {
+class FirestoreProvider(private val firebaseAuth: FirebaseAuth, private val store: FirebaseFirestore) : DataProvider {
 
-    private val currentUser
-        get() = FirebaseAuth.getInstance().currentUser
+     private val currentUser
+        get() = firebaseAuth.currentUser
 
-    private val store by lazy { FirebaseFirestore.getInstance() }
+    
     private val notesReference
             get() = currentUser ?.let {
                 store.collection(USERS_COLLECTION).document(it.uid).collection(NOTES_COLLECTION)
             } ?: throw NoAuthException()
 
 
-    override fun getCurrentUser(): LiveData<User?> = MutableLiveData<User?>().apply{
+    override fun getCurrentUser(): LiveData<User?> = MutableLiveData<User?>().apply {
         value = currentUser ?.let {
             User(it.displayName ?: "", it.email ?: "")
         }
     }
 
     override fun subscribeToAllNotes() : LiveData<NoteResult> = MutableLiveData<NoteResult>().apply {
+        //Логи под индикатор загрузки
         try {
             notesReference.addSnapshotListener{ snapshot, e ->
                 e?.let {
-                    value = NoteResult.Error(it)
-                } ?: snapshot?.let{
-                    val notes = snapshot.documents.mapNotNull {it.toObject(Note::class.java)}
+                    
+                } ?: snapshot?.let {
+                    Log.d("myLOG", "begin: ${snapshot.documents.size}")
+                    val notes = snapshot.documents.mapNotNull {Log.d("myLOG", "1"); it.toObject(Note::class.java) }
+                    Log.d("myLOG", "end: ")
                     value = NoteResult.Success(notes)
                 }
             }
-        } catch (t: Throwable){
+        } catch (t: Throwable) {
             value = NoteResult.Error(t)
         }
     }
@@ -60,13 +64,25 @@ class FirestoreProvider : DataProvider {
         try {
             notesReference.document(id).get()
                 .addOnSuccessListener {
-                    value = NoteResult.Success(
-                        it.toObject(Note::class.java)
-                    )
+                    val note = it.toObject(Note::class.java)
+                    value = NoteResult.Success(note)
                 }.addOnFailureListener {
                     value = NoteResult.Error(it)
                 }
-        } catch (t: Throwable){
+        } catch (t: Throwable) {
+            value = NoteResult.Error(t)
+        }
+    }
+
+    override fun deleteNote(id: String): LiveData<NoteResult> = MutableLiveData<NoteResult>().apply {
+        try {
+            notesReference.document(id).delete()
+                    .addOnSuccessListener {
+                        value = NoteResult.Success(id)
+                    }.addOnFailureListener {
+                        value = NoteResult.Error(it)
+                    }
+        } catch (t: Throwable) {
             value = NoteResult.Error(t)
         }
     }
@@ -75,5 +91,4 @@ class FirestoreProvider : DataProvider {
         private const val NOTES_COLLECTION = "notes"
         private const val USERS_COLLECTION = "users"
     }
-
 }
