@@ -34,8 +34,12 @@ dependencies {
     //viewmodel
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle"
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle"
-    implementation 'com.google.firebase:firebase-firestore:21.6.0'
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle"
+
+    //firebase
+    implementation 'com.google.firebase:firebase-firestore:21.6.0'
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
+    implementation 'com.google.firebase:firebase-auth:19.4.0'
 
     //material
     implementation 'com.google.android.material:material:1.2.1'

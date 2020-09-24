@@ -1,25 +1,29 @@
 package com.nickolay.kotlin_for_android.ui.main
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
+import com.firebase.ui.auth.AuthUI
 import com.nickolay.kotlin_for_android.R
 import com.nickolay.kotlin_for_android.data.entity.Note
 import com.nickolay.kotlin_for_android.ui.adapter.NotesRVAdapter
 import com.nickolay.kotlin_for_android.ui.base.BaseActivity
+import com.nickolay.kotlin_for_android.ui.dialogs.LogoutDialog
 import com.nickolay.kotlin_for_android.ui.note.NoteActivity
+import com.nickolay.kotlin_for_android.ui.splash.SplashActivity
 
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
+class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.LogoutListener {
 
-    private var isDark = false
-
-    private fun saveKey(theme: Int) = sharedPrefs.edit().putInt(PREFS_KEY_THEME, theme).apply()
-    private fun loadKey() = sharedPrefs.getInt(PREFS_KEY_THEME, 0)
+    private fun saveKey(theme: Int) = sharedPrefs.edit().putInt(App.PREFS_KEY_THEME, theme).apply()
 
     private val sharedPrefs by lazy {
         getSharedPreferences(
@@ -55,38 +59,54 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
 
     private fun initTheme() {
         val menuItem = bottomAppBar.menu.findItem(R.id.mi_theme)
-        isDark = loadKey() == THEME_DARK
-        if (isDark) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        if (App.isDark) {
             menuItem.setIcon(R.drawable.ic_day_24)
         } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             menuItem.setIcon(R.drawable.ic_night_24)
         }
     }
 
     private fun setTheme(themeMode: Int, prefsMode: Int) {
+        App.isDark = themeMode == AppCompatDelegate.MODE_NIGHT_YES
         saveKey(prefsMode)
         AppCompatDelegate.setDefaultNightMode(themeMode)
     }
 
-    fun changeTheme(item: MenuItem) {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean =
+            MenuInflater(this).inflate(R.menu.main_menu, menu).let { true }
+
+    fun onOptionsItemSelect(item: MenuItem) {
         when (item.itemId){
             R.id.mi_theme -> {
-                if (isDark){
-                    setTheme(AppCompatDelegate.MODE_NIGHT_NO, THEME_LIGHT)
-                } else {
-                    setTheme(AppCompatDelegate.MODE_NIGHT_YES, THEME_DARK)
+                    if (App.isDark){
+                        setTheme(AppCompatDelegate.MODE_NIGHT_NO, App.THEME_LIGHT)
+                    } else {
+                        setTheme(AppCompatDelegate.MODE_NIGHT_YES, App.THEME_DARK)
+                    }
                 }
+            R.id.mi_logout -> {
+                showLogoutDialog()
             }
         }
     }
 
+    private fun showLogoutDialog() {
+        supportFragmentManager.findFragmentByTag(LogoutDialog.TAG) ?: LogoutDialog().show(supportFragmentManager, LogoutDialog.TAG)
+    }
+
+    override fun onLogout() {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener {
+                    startActivity(Intent(this, SplashActivity::class.java))
+                    finish()
+                }
+    }
 
     companion object{
-        private const val PREFS_KEY_THEME = "theme"
-        private const val THEME_LIGHT = 0
-        private const val THEME_DARK = 1
+        fun start(context: Context) = Intent(context, MainActivity::class.java).apply {
+            context.startActivity(this)
+        }
     }
 
 

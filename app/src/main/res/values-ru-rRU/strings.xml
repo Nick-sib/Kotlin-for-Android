@@ -4,4 +4,9 @@
     <string name="new_note_title">Новая заметка</string>
     <string name="s_mi_theme">Сменить тему</string>
     <string name="note_title_hint">Bведите заголовок</string>
+    <string name="logout_menu_title">Разлогиниться</string>
+    <string name="logout_dialog_title">Выход</string>
+    <string name="logout_dialog_message">Вы уверены?</string>
+    <string name="ok_btn_title">ok</string>
+    <string name="logout_dialog_cancel">Нет</string>
 </resources>

@@ -8,6 +8,14 @@
         android:id="@+id/mi_theme"
         android:icon="@drawable/ic_day_24"
         android:title="@string/s_mi_theme"
-        android:onClick="changeTheme"
+        android:onClick="onOptionsItemSelect"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/mi_logout"
+        android:icon="@drawable/ic_exit_24"
+        android:title="@string/logout_menu_title"
+        android:onClick="onOptionsItemSelect"
+        app:showAsAction="ifRoom"/>
+
 </menu>
