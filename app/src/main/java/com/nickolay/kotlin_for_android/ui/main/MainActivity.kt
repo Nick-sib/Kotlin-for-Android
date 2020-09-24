@@ -23,15 +23,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.LogoutListener {
 
-    private fun saveKey(theme: Int) = sharedPrefs.edit().putInt(App.PREFS_KEY_THEME, theme).apply()
-
-    private val sharedPrefs by lazy {
-        getSharedPreferences(
-                (MainActivity::class).qualifiedName,
-                Context.MODE_PRIVATE
-        )
-    }
-
     //val firestoreProvider: FirestoreProvider by inject()
     override val viewModel: MainViewModel by viewModel()
 
@@ -59,17 +50,12 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
 
     private fun initTheme() {
         val menuItem = bottomAppBar.menu.findItem(R.id.mi_theme)
-        if (App.isDark) {
+
+        if (App.instance.isDark) {
             menuItem.setIcon(R.drawable.ic_day_24)
         } else {
             menuItem.setIcon(R.drawable.ic_night_24)
         }
-    }
-
-    private fun setTheme(themeMode: Int, prefsMode: Int) {
-        App.isDark = themeMode == AppCompatDelegate.MODE_NIGHT_YES
-        saveKey(prefsMode)
-        AppCompatDelegate.setDefaultNightMode(themeMode)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean =
@@ -78,12 +64,8 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
     fun onOptionsItemSelect(item: MenuItem) {
         when (item.itemId){
             R.id.mi_theme -> {
-                    if (App.isDark){
-                        setTheme(AppCompatDelegate.MODE_NIGHT_NO, App.THEME_LIGHT)
-                    } else {
-                        setTheme(AppCompatDelegate.MODE_NIGHT_YES, App.THEME_DARK)
-                    }
-                }
+                App.instance.isDark = !App.instance.isDark
+            }
             R.id.mi_logout -> {
                 showLogoutDialog()
             }
@@ -108,7 +90,5 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
             context.startActivity(this)
         }
     }
-
-
 
 }

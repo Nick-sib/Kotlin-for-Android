@@ -17,13 +17,24 @@ class App: Application() {
         const val THEME_LIGHT = 0
         const val THEME_DARK = 1
 
-        var isDark = false
-
         lateinit var instance : App
             private set
+
     }
 
+    private fun saveKey(theme: Int) = sharedPrefs.edit().putInt(App.PREFS_KEY_THEME, theme).apply()
+
     private fun loadKey() = sharedPrefs.getInt(PREFS_KEY_THEME, 0)
+
+    var isDark = false
+        set(value) {
+            if (field != value) {
+                field = value
+                AppCompatDelegate.setDefaultNightMode(
+                        if (value) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+                saveKey(if (value) THEME_DARK else THEME_LIGHT)
+            }
+        }
 
     private val sharedPrefs by lazy {
         getSharedPreferences(
@@ -36,13 +47,9 @@ class App: Application() {
         super.onCreate()
 
         isDark = loadKey() == THEME_DARK
-        if (isDark) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
 
         instance = this
         startKoin(this, listOf(appModule, splashModule, mainModule, noteModule))
     }
+
 }
