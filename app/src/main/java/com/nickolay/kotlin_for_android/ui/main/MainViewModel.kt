@@ -1,5 +1,6 @@
 package com.nickolay.kotlin_for_android.ui.main
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
 import com.nickolay.kotlin_for_android.data.NotesRepository
 import com.nickolay.kotlin_for_android.data.entity.Note
@@ -24,7 +25,8 @@ class MainViewModel(notesRepository: NotesRepository) : BaseViewModel<List<Note>
 
     }
 
-    override fun onCleared() {
+    @VisibleForTesting
+    public override fun onCleared() {
         super.onCleared()
         repositoryNotes.removeObserver(notesObserver)
     }

@@ -124,4 +124,5 @@ class FirestoreProviderTest {
         slot.captured.onEvent(null, testError)
         assertEquals(testError, result)
     }
+    //Добавить deleteNote getNoteByID
 }
