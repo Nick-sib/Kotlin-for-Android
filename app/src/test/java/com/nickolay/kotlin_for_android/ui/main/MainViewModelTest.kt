@@ -19,7 +19,6 @@ class MainViewModelTest{
     @get:Rule
     val taskExecutionRule = InstantTaskExecutorRule()
 
-
     private val mockRepository = mockk<NotesRepository>()
     private val notesLiveData = MutableLiveData<NoteResult>()
     private lateinit var viewModel: MainViewModel
