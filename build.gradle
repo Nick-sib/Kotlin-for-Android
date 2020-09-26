@@ -5,6 +5,8 @@ buildscript {
         lifecycle = '2.2.0'
         koin_version = '1.0.1'
         mockk_version = '1.10.0'
+        espresso_version = '3.3.0'
+
     }
     repositories {
         google()
