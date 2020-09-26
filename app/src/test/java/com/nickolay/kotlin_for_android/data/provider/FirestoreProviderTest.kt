@@ -126,7 +126,7 @@ class FirestoreProviderTest {
     }
 
     @Test
-    fun `deleteNote calls set`() {
+    fun `deleteNote calls delete`() {
         val mockDocumentReference = mockk<DocumentReference>()
         val slot = slot<OnSuccessListener<in Void>>()
         every { mockResultCollection.document(testNotes[0].id) } returns mockDocumentReference
@@ -151,6 +151,7 @@ class FirestoreProviderTest {
 
         slot.captured.onSuccess(null)
         assertTrue(result is NoteResult.Success<*>)
+        assertEquals((result as NoteResult.Success<*>).data, testNotes[0].id)
     }
 
     @Test
