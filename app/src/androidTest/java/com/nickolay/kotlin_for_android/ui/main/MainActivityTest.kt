@@ -22,9 +22,8 @@ import org.koin.dsl.module.module
 import org.koin.standalone.StandAloneContext.loadKoinModules
 import org.koin.standalone.StandAloneContext.stopKoin
 
-
-
 class MainActivityTest {
+
     @get:Rule
     val activityTestRule = IntentsTestRule(MainActivity::class.java, true, false)
 
