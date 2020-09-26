@@ -124,5 +124,48 @@ class FirestoreProviderTest {
         slot.captured.onEvent(null, testError)
         assertEquals(testError, result)
     }
-    //Добавить deleteNote getNoteByID
+
+    @Test
+    fun `deleteNote calls set`() {
+        val mockDocumentReference = mockk<DocumentReference>()
+        val slot = slot<OnSuccessListener<in Void>>()
+        every { mockResultCollection.document(testNotes[0].id) } returns mockDocumentReference
+        every { mockDocumentReference.delete().addOnSuccessListener(capture(slot)) } returns mockk()
+
+        provider.deleteNote(testNotes[0].id)
+        verify(exactly = 1) { mockDocumentReference.delete() }
+    }
+
+    @Test
+    fun `deleteNote returns Note`() {
+        var result: NoteResult? = null
+        val mockDocumentReference = mockk<DocumentReference>()
+        val slot = slot<OnSuccessListener<in Void>>()
+
+        every { mockResultCollection.document(testNotes[0].id) } returns mockDocumentReference
+        every { mockDocumentReference.delete().addOnSuccessListener(capture(slot)) } returns mockk()
+
+        provider.deleteNote(testNotes[0].id).observeForever {
+            result = it
+        }
+
+        slot.captured.onSuccess(null)
+        assertTrue(result is NoteResult.Success<*>)
+    }
+
+    @Test
+    fun `getNoteByID returns note`() {
+        var result: Note? = null
+        val mockDocumentReference: DocumentReference = mockk()
+        val slot = slot<OnSuccessListener<in DocumentSnapshot>>()
+
+        every { mockResultCollection.document(testNotes[0].id) } returns mockDocumentReference
+        every { mockDocumentReference.get().addOnSuccessListener(capture(slot)) } returns mockk()
+
+        provider.getNoteByID(testNotes[0].id).observeForever{
+            result = (it as? NoteResult.Success<*>)?.data as? Note }
+
+        slot.captured.onSuccess(mockDocument1)
+        assertEquals(testNotes[0], result)
+    }
 }
