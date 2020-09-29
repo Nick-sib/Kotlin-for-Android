@@ -68,6 +68,7 @@ class NoteActivity : BaseActivity<NoteData>(){
             toolbar.setBackgroundColor(ResourcesCompat.getColor(resources, it.color.id, null))
             toolbar.title = SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault()).format(it.lastChanged)
             color = it.color
+            viewModel.save(it)
         }
 
         tietTitle.addTextChangedListener (textWatcher)
@@ -124,7 +125,7 @@ class NoteActivity : BaseActivity<NoteData>(){
     }
 
     private fun deleteNote(){
-            supportFragmentManager.findFragmentByTag(DeleteNoteDialog.TAG) ?: DeleteNoteDialog().show(supportFragmentManager, DeleteNoteDialog.TAG)
+        supportFragmentManager.findFragmentByTag(DeleteNoteDialog.TAG) ?: DeleteNoteDialog().show(supportFragmentManager, DeleteNoteDialog.TAG)
     }
 
     companion object {

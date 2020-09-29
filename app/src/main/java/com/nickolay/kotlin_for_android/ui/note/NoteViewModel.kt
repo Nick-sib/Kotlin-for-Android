@@ -26,9 +26,10 @@ class NoteViewModel(private val notesRepository: NotesRepository): BaseViewModel
     fun deleteNote() = launch{
         try {
             pendingNote?.let {
-                notesRepository.getNoteByID(it.id)
+                notesRepository.deleteNote(it.id)
+                pendingNote = null
             }
-            setData(NoteData(isDeleted = true))
+            setData(NoteData(isDeleted = true, note = null))
         } catch (e: Throwable) {
             setError(e)
         }
