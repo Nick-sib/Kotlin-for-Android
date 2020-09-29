@@ -31,7 +31,7 @@ class NoteActivityTest {
     fun setup() {
         loadKoinModules ( listOf ( module { viewModel{ model } } ) )
 
-        every {  model.getViewState() } returns viewStateLiveData
+        //every {  model.getViewState() } returns viewStateLiveData
         activityTestRule.launchActivity(null)
         //viewStateLiveData.postValue(MainViewState(notes = testNotes))
     }
