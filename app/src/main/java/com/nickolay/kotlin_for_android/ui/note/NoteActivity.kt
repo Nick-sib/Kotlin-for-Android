@@ -17,7 +17,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
+class NoteActivity : BaseActivity<NoteData>(){
 
     override val viewModel: NoteViewModel by viewModel()
     override val layoutRes = R.layout.activity_note
@@ -50,7 +50,7 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
         }
     }
 
-    override fun renderData(data: NoteViewState.Data) {
+    override fun renderData(data: NoteData) {
         if (data.isDeleted) {
             finish()
         } else {
@@ -60,7 +60,6 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
     }
 
     private fun initView() {
-
         tietTitle.removeTextChangedListener(textWatcher)
         etBody.removeTextChangedListener(textWatcher)
 

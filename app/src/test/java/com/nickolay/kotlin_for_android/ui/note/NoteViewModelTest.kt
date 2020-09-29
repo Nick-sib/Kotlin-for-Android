@@ -32,8 +32,8 @@ class NoteViewModelTest {
 
     @Test
     fun `loadNote should return Note`(){
-        var result: NoteViewState.Data? = null
-        val testData = NoteViewState.Data(false, testNote)
+        var result: NoteData.Data? = null
+        val testData = NoteData.Data(false, testNote)
         viewModel.getViewState().observeForever {
             result = it?.data
         }
@@ -57,8 +57,8 @@ class NoteViewModelTest {
 
     @Test
     fun `delete should return NoteData with isDeleted`() {
-        var result: NoteViewState.Data? = null
-        val testData = NoteViewState.Data(true, null)
+        var result: NoteData.Data? = null
+        val testData = NoteData.Data(true, null)
         viewModel.getViewState().observeForever {
             result = it?.data
         }

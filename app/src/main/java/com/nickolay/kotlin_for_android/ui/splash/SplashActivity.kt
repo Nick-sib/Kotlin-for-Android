@@ -1,11 +1,10 @@
 package com.nickolay.kotlin_for_android.ui.splash
 
-
 import com.nickolay.kotlin_for_android.ui.base.BaseActivity
 import com.nickolay.kotlin_for_android.ui.main.MainActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SplashActivity: BaseActivity<Boolean?, SplashViewState>() {
+class SplashActivity: BaseActivity<Boolean?>() {
 
     override val viewModel: SplashViewModel by viewModel()
 

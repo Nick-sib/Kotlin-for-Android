@@ -25,7 +25,7 @@ class NoteActivityTest {
     val activityTestRule = IntentsTestRule(NoteActivity::class.java, true, false)
 
     private val model: NoteViewModel = mockk(relaxed = true)
-    private val viewStateLiveData = MutableLiveData<NoteViewState>()
+    private val viewStateLiveData = MutableLiveData<NoteData>()
 
     @Before
     fun setup() {

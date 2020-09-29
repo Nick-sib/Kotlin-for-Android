@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.LogoutListener {
+class MainActivity : BaseActivity<List<Note>?>(), LogoutDialog.LogoutListener {
 
     //val firestoreProvider: FirestoreProvider by inject()
     override val viewModel: MainViewModel by viewModel()
@@ -61,6 +61,7 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
     override fun onCreateOptionsMenu(menu: Menu?): Boolean =
             MenuInflater(this).inflate(R.menu.main_menu, menu).let { true }
 
+    //TODO: rewrite to override function
     fun onOptionsItemSelect(item: MenuItem) {
         when (item.itemId){
             R.id.mi_theme -> {
