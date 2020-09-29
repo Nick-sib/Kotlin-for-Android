@@ -33,7 +33,6 @@ class NoteActivity : BaseActivity<NoteData>(){
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
