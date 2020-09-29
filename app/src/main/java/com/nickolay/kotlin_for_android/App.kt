@@ -50,6 +50,7 @@ class App: Application() {
 
         instance = this
         startKoin(this, listOf(appModule, splashModule, mainModule, noteModule))
+
     }
 
 }
