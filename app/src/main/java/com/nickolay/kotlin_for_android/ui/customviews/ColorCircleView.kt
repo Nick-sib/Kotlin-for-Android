@@ -13,9 +13,12 @@ import androidx.core.content.ContextCompat
 import com.nickolay.kotlin_for_android.R
 import com.nickolay.kotlin_for_android.extensions.dip
 
-class ColorCircleView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0): View(context, attrs, defStyleAttr) {
+class ColorCircleView @JvmOverloads
+constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+        View(context, attrs, defStyleAttr) {
 
-    @Dimension(unit = PX) var radius: Float = dip(defRadiusDp)
+    @Dimension(unit = PX)
+    var radius: Float = dip(defRadiusDp)
 
     @ColorRes
     var fillColorRes: Int = R.color.white
@@ -71,7 +74,7 @@ class ColorCircleView @JvmOverloads constructor(context: Context, attrs: Attribu
 
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        center = measuredWidth/2f to measuredHeight/2f
+        center = measuredWidth / 2f to measuredHeight / 2f
         super.onLayout(changed, left, top, right, bottom)
     }
 
@@ -83,7 +86,9 @@ class ColorCircleView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     companion object {
-        @Dimension(unit = DP) private const val defRadiusDp = 16
-        @Dimension(unit = DP) private const val defStrokeWidthDp = 1
+        @Dimension(unit = DP)
+        private const val defRadiusDp = 16
+        @Dimension(unit = DP)
+        private const val defStrokeWidthDp = 1
     }
 }

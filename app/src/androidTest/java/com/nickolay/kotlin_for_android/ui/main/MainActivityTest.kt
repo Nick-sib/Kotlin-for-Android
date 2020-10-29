@@ -1,25 +1,14 @@
 package com.nickolay.kotlin_for_android.ui.main
 
-import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.nickolay.kotlin_for_android.R
 import com.nickolay.kotlin_for_android.data.entity.Note
-import com.nickolay.kotlin_for_android.data.model.NoteResult
-import com.nickolay.kotlin_for_android.ui.adapter.NotesRVAdapter
-import com.nickolay.kotlin_for_android.ui.note.NoteActivity
-import com.nickolay.kotlin_for_android.ui.note.NoteViewModel
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before

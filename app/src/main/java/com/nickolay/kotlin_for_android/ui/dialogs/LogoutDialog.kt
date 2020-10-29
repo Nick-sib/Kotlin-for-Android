@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.nickolay.kotlin_for_android.R
 
-class LogoutDialog() : DialogFragment() {
+class LogoutDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
             AlertDialog.Builder(context!!)
@@ -22,6 +22,5 @@ class LogoutDialog() : DialogFragment() {
 
     companion object {
         val TAG = LogoutDialog::class.java.name + "TAG"
-        // fun createInstance() = LogoutDialog()
     }
 }

@@ -29,5 +29,4 @@
             tools:text="My very important note text with very important information"/>
 
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

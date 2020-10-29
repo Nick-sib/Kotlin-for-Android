@@ -4,7 +4,7 @@ import com.nickolay.kotlin_for_android.data.entity.Note
 import com.nickolay.kotlin_for_android.data.provider.DataProvider
 
 
-class NotesRepository(val dataProvider: DataProvider) {
+class NotesRepository(private val dataProvider: DataProvider) {
 
     fun getNotes() = dataProvider.subscribeToAllNotes()
 

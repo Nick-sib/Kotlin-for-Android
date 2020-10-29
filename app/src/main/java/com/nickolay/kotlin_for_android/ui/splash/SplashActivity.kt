@@ -24,9 +24,5 @@ class SplashActivity: BaseActivity<Boolean?>() {
     override fun onResume() {
         super.onResume()
         viewModel.requestUser()
-        /*Handler(Looper.getMainLooper()).postDelayed(
-                {viewModel.requestUser()},
-                1000
-        )*/
     }
 }

@@ -20,6 +20,5 @@ class DeleteNoteDialog : DialogFragment() {
 
     companion object {
         val TAG = DeleteNoteDialog::class.java.name + "TAG"
-        // fun createInstance() = LogoutDialog()
     }
 }

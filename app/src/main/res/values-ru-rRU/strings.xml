@@ -13,4 +13,5 @@
     <string name="note_delete">Удалить</string>
     <string name="dialog_delete_title">Удалить</string>
     <string name="dialog_delete_message">Вы уверены?</string>
+    <string name="fab_description">Добавить заметку</string>
 </resources>

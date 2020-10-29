@@ -111,12 +111,12 @@ class NoteActivity : BaseActivity<NoteData>(){
                 onBackPressed()
                 true
             }
-        R.id.mi_note_color -> togglePallete().let{ true }
+        R.id.mi_note_color -> togglePalette().let{ true }
         R.id.mi_note_delete -> deleteNote().let{ true}
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun togglePallete(){
+    private fun togglePalette(){
         if (colorPicker.isOpen) {
             colorPicker.close()
         } else {

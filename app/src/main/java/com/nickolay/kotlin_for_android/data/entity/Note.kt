@@ -14,7 +14,7 @@ data class Note(
         val lastChanged: Date = Date()): Parcelable {
 
 
-    override fun equals(other: Any?) =
+    override fun equals(other: Any?): Boolean =
         when{
             (this === other) -> true
             (javaClass != other?.javaClass) -> false
@@ -22,7 +22,7 @@ data class Note(
             else -> true
         }
 
-    override fun hashCode() = id.hashCode()
+    override fun hashCode(): Int = id.hashCode()
 
     enum class Color(val id: Int) {
         WHITE(R.color.color_white),
@@ -35,4 +35,4 @@ data class Note(
     }
 }
 
-fun genNewID()= UUID.randomUUID().toString()
+fun genNewID(): String = UUID.randomUUID().toString()

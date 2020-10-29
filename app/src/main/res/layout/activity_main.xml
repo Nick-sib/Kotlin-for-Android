@@ -26,7 +26,6 @@
         app:hideOnScroll="true"
         app:layout_scrollFlags="scroll|enterAlways"
         app:menu="@menu/main_menu"/>
-        <!--app:navigationIcon="@drawable/ic_menu_24"/-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -35,6 +34,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add_24"
         app:layout_behavior=".ui.common.FABBehavior"
-        app:layout_anchor="@id/bottomAppBar" />
+        app:layout_anchor="@id/bottomAppBar"
+        android:contentDescription="@string/fab_description" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
