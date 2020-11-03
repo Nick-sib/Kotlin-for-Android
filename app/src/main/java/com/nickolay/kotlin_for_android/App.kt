@@ -22,7 +22,7 @@ class App: Application() {
 
     }
 
-    private fun saveKey(theme: Int) = sharedPrefs.edit().putInt(App.PREFS_KEY_THEME, theme).apply()
+    private fun saveKey(theme: Int) = sharedPrefs.edit().putInt(PREFS_KEY_THEME, theme).apply()
 
     private fun loadKey() = sharedPrefs.getInt(PREFS_KEY_THEME, 0)
 

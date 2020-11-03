@@ -5,34 +5,56 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.firebase.ui.auth.AuthUI
 import com.nickolay.kotlin_for_android.R
 import com.nickolay.kotlin_for_android.data.errors.NoAuthException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-abstract class BaseActivity<T, S: BaseViewState<T>>: AppCompatActivity() {
-    abstract val viewModel: BaseViewModel<T, S>
+abstract class BaseActivity<S>: AppCompatActivity(), CoroutineScope {
+
+    override val coroutineContext: CoroutineContext by lazy {
+        Dispatchers.Main + Job()
+    }
+
+    abstract val viewModel: BaseViewModel<S>
     abstract val layoutRes: Int?
+
+    private lateinit var dataJob: Job
+    private lateinit var errorJob: Job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         layoutRes ?.let {
             setContentView(it)
         }
-
-        viewModel.getViewState().observe(this, Observer {state ->
-            state ?: return@Observer
-            state.error?.let {
-                renderError(it)
-                return@Observer
-            }
-            renderData(state.data)
-        })
-
     }
 
+    override fun onStart() {
+        super.onStart()
+        dataJob = launch{
+            viewModel.getViewState().consumeEach {
+                renderData(it)
+            }
+        }
+        errorJob = launch{
+            viewModel.getErrorChannel().consumeEach {
+                renderError(it)
+            }
+        }
+    }
 
-    abstract fun renderData(data: T)
+    override fun onStop() {
+        super.onStop()
+        dataJob.cancel()
+        errorJob.cancel()
+    }
+
+    abstract fun renderData(data: S)
 
     private fun renderError(error: Throwable){
         when (error) {

@@ -4,10 +4,12 @@ import com.nickolay.kotlin_for_android.data.entity.Note
 import com.nickolay.kotlin_for_android.data.provider.DataProvider
 
 
-class NotesRepository(val dataProvider: DataProvider) {
-    fun getCurrentUser() = dataProvider.getCurrentUser()
+class NotesRepository(private val dataProvider: DataProvider) {
+
     fun getNotes() = dataProvider.subscribeToAllNotes()
-    fun saveNote(note: Note) = dataProvider.saveNote(note)
-    fun getNoteByID(id: String) = dataProvider.getNoteByID(id)
-    fun deleteNote(id: String) = dataProvider.deleteNote(id)
+
+    suspend fun getCurrentUser() = dataProvider.getCurrentUser()
+    suspend fun saveNote(note: Note) = dataProvider.saveNote(note)
+    suspend fun getNoteByID(id: String) = dataProvider.getNoteByID(id)
+    suspend fun deleteNote(id: String) = dataProvider.deleteNote(id)
 }

@@ -17,7 +17,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
+class NoteActivity : BaseActivity<NoteData>(){
 
     override val viewModel: NoteViewModel by viewModel()
     override val layoutRes = R.layout.activity_note
@@ -32,7 +32,6 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +49,7 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
         }
     }
 
-    override fun renderData(data: NoteViewState.Data) {
+    override fun renderData(data: NoteData) {
         if (data.isDeleted) {
             finish()
         } else {
@@ -60,7 +59,6 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
     }
 
     private fun initView() {
-
         tietTitle.removeTextChangedListener(textWatcher)
         etBody.removeTextChangedListener(textWatcher)
 
@@ -69,6 +67,8 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
             etBody.setTextKeepState(it.text)
             toolbar.setBackgroundColor(ResourcesCompat.getColor(resources, it.color.id, null))
             toolbar.title = SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault()).format(it.lastChanged)
+            color = it.color
+            viewModel.save(it)
         }
 
         tietTitle.addTextChangedListener (textWatcher)
@@ -111,12 +111,12 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
                 onBackPressed()
                 true
             }
-        R.id.mi_note_color -> togglePallete().let{ true }
+        R.id.mi_note_color -> togglePalette().let{ true }
         R.id.mi_note_delete -> deleteNote().let{ true}
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun togglePallete(){
+    private fun togglePalette(){
         if (colorPicker.isOpen) {
             colorPicker.close()
         } else {
@@ -125,7 +125,7 @@ class NoteActivity : BaseActivity<NoteViewState.Data, NoteViewState>(){
     }
 
     private fun deleteNote(){
-            supportFragmentManager.findFragmentByTag(DeleteNoteDialog.TAG) ?: DeleteNoteDialog().show(supportFragmentManager, DeleteNoteDialog.TAG)
+        supportFragmentManager.findFragmentByTag(DeleteNoteDialog.TAG) ?: DeleteNoteDialog().show(supportFragmentManager, DeleteNoteDialog.TAG)
     }
 
     companion object {

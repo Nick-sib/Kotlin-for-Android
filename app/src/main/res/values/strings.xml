@@ -15,4 +15,5 @@
 
     <string name="note_change_color">Color</string>
     <string name="note_delete">Delete</string>
+    <string name="fab_description">Add new Note</string>
 </resources>

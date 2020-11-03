@@ -32,7 +32,6 @@
         tools:layout_editor_absoluteX="5dp" />
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -60,6 +59,4 @@
             app:layout_scrollFlags="scroll|enterAlways"/>
 
     </com.google.android.material.appbar.AppBarLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

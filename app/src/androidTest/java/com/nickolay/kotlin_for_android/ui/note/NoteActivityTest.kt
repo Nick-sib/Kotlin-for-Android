@@ -7,7 +7,6 @@ import androidx.test.espresso.intent.rule.IntentsTestRule
 import com.nickolay.kotlin_for_android.R
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.After
@@ -25,13 +24,13 @@ class NoteActivityTest {
     val activityTestRule = IntentsTestRule(NoteActivity::class.java, true, false)
 
     private val model: NoteViewModel = mockk(relaxed = true)
-    private val viewStateLiveData = MutableLiveData<NoteViewState>()
+    //private val viewStateLiveData = MutableLiveData<NoteData>()
 
     @Before
     fun setup() {
         loadKoinModules ( listOf ( module { viewModel{ model } } ) )
 
-        every {  model.getViewState() } returns viewStateLiveData
+        //every {  model.getViewState() } returns viewStateLiveData
         activityTestRule.launchActivity(null)
         //viewStateLiveData.postValue(MainViewState(notes = testNotes))
     }

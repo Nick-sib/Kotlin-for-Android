@@ -1,18 +1,15 @@
 package com.nickolay.kotlin_for_android.ui.main
 
-import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import com.nickolay.kotlin_for_android.R
 import com.nickolay.kotlin_for_android.data.entity.Note
-import com.nickolay.kotlin_for_android.ui.adapter.NotesRVAdapter
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -28,7 +25,6 @@ class MainActivityTest {
     val activityTestRule = IntentsTestRule(MainActivity::class.java, true, false)
 
     private val model: MainViewModel = mockk(relaxed = true)
-    private val viewStateLiveData = MutableLiveData<MainViewState>()
 
     private val testNotes = listOf(
             Note("id1", "title1", "text1" ),
@@ -37,6 +33,8 @@ class MainActivityTest {
             Note("id4", "title4", "text4" ),
             Note("id5", "title5", "text5" )
     )
+
+    private val channel = Channel<List<Note>>(Channel.CONFLATED)
 
     @Before
     fun setup() {
@@ -48,9 +46,13 @@ class MainActivityTest {
                 )
         )
 
-        every {  model.getViewState() } returns viewStateLiveData
+        every { model.getViewState() } returns channel
         activityTestRule.launchActivity(null)
-        viewStateLiveData.postValue(MainViewState(notes = testNotes))
+        runBlocking {
+            channel.send(testNotes)
+        }
+
+        //viewStateLiveData.postValue(MainViewState(notes = testNotes))
 
     }
 
@@ -61,8 +63,9 @@ class MainActivityTest {
 
     @Test
     fun check_data_is_displayed(){
-        onView(withId(R.id.rv_notes)).perform(scrollToPosition<NotesRVAdapter.ViewHolder>(1))
         onView(withText(testNotes[1].text)).check(matches(isDisplayed()))
+//        onView(withId(R.id.rv_notes)).perform(scrollToPosition<NotesRVAdapter.ViewHolder>(1))
+//        onView(withText(testNotes[1].text)).check(matches(isDisplayed()))
     }
 
 }

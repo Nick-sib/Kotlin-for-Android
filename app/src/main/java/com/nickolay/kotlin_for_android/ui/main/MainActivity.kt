@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatDelegate
 import com.firebase.ui.auth.AuthUI
 import com.nickolay.kotlin_for_android.App
 import com.nickolay.kotlin_for_android.R
@@ -21,9 +20,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.LogoutListener {
+class MainActivity : BaseActivity<List<Note>?>(), LogoutDialog.LogoutListener {
 
-    //val firestoreProvider: FirestoreProvider by inject()
     override val viewModel: MainViewModel by viewModel()
 
     override val layoutRes = R.layout.activity_main
@@ -32,11 +30,9 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
         super.onCreate(savedInstanceState)
 
         initTheme()
-
-        rv_notes.adapter = NotesRVAdapter{
+        rv_notes.adapter = NotesRVAdapter {
             NoteActivity.start(this, it.id)
         }
-
         fab.setOnClickListener {
             NoteActivity.start(this)
         }
@@ -62,7 +58,7 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
             MenuInflater(this).inflate(R.menu.main_menu, menu).let { true }
 
     fun onOptionsItemSelect(item: MenuItem) {
-        when (item.itemId){
+        when (item.itemId) {
             R.id.mi_theme -> {
                 App.instance.isDark = !App.instance.isDark
             }
@@ -73,7 +69,8 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
     }
 
     private fun showLogoutDialog() {
-        supportFragmentManager.findFragmentByTag(LogoutDialog.TAG) ?: LogoutDialog().show(supportFragmentManager, LogoutDialog.TAG)
+        supportFragmentManager.findFragmentByTag(LogoutDialog.TAG)
+                ?: LogoutDialog().show(supportFragmentManager, LogoutDialog.TAG)
     }
 
     override fun onLogout() {
@@ -85,7 +82,7 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), LogoutDialog.Lo
                 }
     }
 
-    companion object{
+    companion object {
         fun start(context: Context) = Intent(context, MainActivity::class.java).apply {
             context.startActivity(this)
         }
